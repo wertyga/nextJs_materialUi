@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
 import { Tabs, Tab } from "@material-ui/core";
+import { useRouter } from 'next/router';
 import { gfMenu } from 'goldfish/menu';
 
-// import useStyles from './styles';
-import ss from './styles.module.css';
+import useStyles from './styles';
 
 const SideMenu: React.FC = () => {
-	// const styles = useStyles();
-	const [tabValue, setTab] = useState(0);
+	const styles = useStyles();
+	const router = useRouter();
+	const [tabValue, setTab] = useState(() => {
+		let index = 0;
+		gfMenu.find(({ href }, i) => {
+			if (href === router.pathname) {
+				index = i;
+				return true;
+			}
+			return false;
+		});
+		return index;
+	});
 	
 	const handleChange = (e: React.ChangeEvent<{}>, value: number) => {
 		const chosenTab = gfMenu[value];
-		console.log(chosenTab);
+		router.push(chosenTab.href);
 		setTab(value);
 	};
 	return (
@@ -20,13 +31,13 @@ const SideMenu: React.FC = () => {
 			variant="scrollable"
 			value={tabValue}
 			onChange={handleChange}
-			// className={ss.tabs}
+			className={styles.tabs}
 		>
 			{gfMenu.map(({ href, key, label, Icon }) => (
 				<Tab
 					key={key}
 					icon={<Icon /> }
-					// className={ss.tab}
+					className={styles.tab}
 				/>
 			))}
 		</Tabs>

@@ -5,11 +5,13 @@ import SideMenu from 'components/SideMenu/SideMenu';
 import useStyles from './styles';
 
 const AppContent = ({ Component, pageProps }) => {
-	// const styles = useStyles();
+	const styles = useStyles();
 	return (
-		<div>
+		<div className={styles.wrapper}>
 			<SideMenu />
-			<Component {...pageProps} />
+			<Container>
+				<Component {...pageProps} />
+			</Container>
 		</div>
 	);
 };
